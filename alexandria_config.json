@@ -1,0 +1,11 @@
+[
+    {
+        "output_dir": "~/dev/docs",
+        "projects_root": "~/dev/projects",
+        "projects": [
+            "dart-common",
+            "aces/aces_core",
+            "aces/aces-pm-lib"
+        ]
+    }
+]

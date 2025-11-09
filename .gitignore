@@ -1,0 +1,16 @@
+# IDE-specific files
+.idea/
+.vscode/
+
+# Files and directories created by Dart
+.dart_tool/
+.packages
+build/
+doc/
+docs/
+
+# Files created by dart2js
+*.dart.js
+*.dart.js.deps
+*.dart.js.map
+*.dart.precompiled.js
