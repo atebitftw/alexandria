@@ -36,8 +36,8 @@ The utility will generate the documentation into the specified output directory 
 |---|---|---|---|
 | `--config` | `-c` | Path to the alexandria_config.json file. | `alexandria_config.json` |
 | `--help` | `-h` | Displays this help information. | |
-| `--version` | `-v` | Displays the application version. | |
-| `--quiet` | `-q` | Suppresses output from dart doc. | |
+| `--version` | | Displays the application version. | |
+| `--verbose` | `-o` | Shows verbose output from dart doc. | |
 
 ## Configuration
 

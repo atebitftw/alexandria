@@ -7,12 +7,12 @@ import 'shell_executor.dart';
 
 class DocGenerator {
   final Map<String, dynamic> _config;
-  final bool _quiet;
+  final bool _verbose;
   final _shell = ShellExecutor();
 
-  DocGenerator(List<dynamic> config, {bool quiet = false})
+  DocGenerator(List<dynamic> config, {bool verbose = false})
       : _config = config.first,
-        _quiet = quiet;
+        _verbose = verbose;
 
   Future<void> generate() async {
     final outputDir = _expandPath(_config['output_dir']);
@@ -56,7 +56,7 @@ class DocGenerator {
       if (result.exitCode == 0) {
         await metadataFile.writeAsString('{"version": "$currentVersion"}');
         print('Successfully generated docs for $projectName.');
-        if (!_quiet && result.stdout.toString().isNotEmpty) {
+        if (_verbose && result.stdout.toString().isNotEmpty) {
           print(result.stdout);
         }
       } else {

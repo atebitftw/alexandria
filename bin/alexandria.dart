@@ -3,8 +3,19 @@ import 'dart:io';
 
 import 'package:alexandria/src/doc_generator.dart';
 import 'package:args/args.dart';
+import 'package:pubspec_parse/pubspec_parse.dart';
 
-const version = '1.0.5';
+
+
+Future<String> _getPackageVersion() async {
+  final pubspecFile = File('pubspec.yaml');
+  if (!pubspecFile.existsSync()) {
+    return 'Unknown';
+  }
+  final pubspecContent = await pubspecFile.readAsString();
+  final pubspec = Pubspec.parse(pubspecContent);
+  return pubspec.version?.toString() ?? 'Unknown';
+}
 
 Future<void> main(List<String> args) async {
   final parser = ArgParser()
@@ -22,18 +33,18 @@ Future<void> main(List<String> args) async {
     )
     ..addFlag(
       'version',
-      abbr: 'v',
       negatable: false,
       help: 'Displays the application version.',
     )
     ..addFlag(
-      'quiet',
-      abbr: 'q',
+      'verbose',
+      abbr: 'o',
       negatable: false,
-      help: 'Suppresses output from dart doc.',
+      help: 'Shows verbose output from dart doc.',
     );
 
   final argResults = parser.parse(args);
+  final version = await _getPackageVersion();
 
   if (argResults['help']) {
     print('Alexandria v$version\n');
@@ -63,7 +74,7 @@ Future<void> main(List<String> args) async {
 
     final docGenerator = DocGenerator(
       config,
-      quiet: argResults['quiet'],
+      verbose: argResults['verbose'],
     );
     await docGenerator.generate();
   } catch (e, stack) {
