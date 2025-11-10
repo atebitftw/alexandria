@@ -6,13 +6,10 @@ environment:
   sdk: ^3.9.2
 publish_to: none
 
-executables:
-  alexandria:
-
 dependencies:
   args:
   logging:
   path:
-  pubspec_parse: ^1.2.3
+
 dev_dependencies:
   lints:

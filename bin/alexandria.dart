@@ -3,35 +3,8 @@ import 'dart:io';
 
 import 'package:alexandria/src/doc_generator.dart';
 import 'package:args/args.dart';
-import 'package:pubspec_parse/pubspec_parse.dart';
-import 'package:path/path.dart' as p;
 
-Future<String> _getPackageVersion() async {
-  var scriptDir = p.dirname(Platform.script.toFilePath());
-  var projectRoot = Directory(scriptDir);
-
-  // In a compiled executable, the scriptDir might be in a bin/ or lib/ directory
-  // relative to the project root. We need to go up until we find pubspec.yaml.
-  while (projectRoot.parent.path != projectRoot.path) {
-    final pubspecFile = File(p.join(projectRoot.path, 'pubspec.yaml'));
-    if (pubspecFile.existsSync()) {
-      final pubspecContent = await pubspecFile.readAsString();
-      final pubspec = Pubspec.parse(pubspecContent);
-      return pubspec.version?.toString() ?? 'Unknown';
-    }
-    projectRoot = projectRoot.parent;
-  }
-
-  // Fallback for development environment (running from project root)
-  final pubspecFile = File('pubspec.yaml');
-  if (pubspecFile.existsSync()) {
-    final pubspecContent = await pubspecFile.readAsString();
-    final pubspec = Pubspec.parse(pubspecContent);
-    return pubspec.version?.toString() ?? 'Unknown';
-  }
-
-  return 'Unknown';
-}
+const String version = "1.0.9";
 
 Future<void> main(List<String> args) async {
   final parser = ArgParser()
@@ -46,7 +19,6 @@ Future<void> main(List<String> args) async {
     ..addFlag('verbose', abbr: 'o', negatable: false, help: 'Shows verbose output from dart doc.');
 
   final argResults = parser.parse(args);
-  final version = await _getPackageVersion();
 
   if (argResults['help']) {
     print('Alexandria v$version\n');
