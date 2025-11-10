@@ -12,10 +12,9 @@ A command-line utility for generating and consolidating Dart documentation from 
 ## Installation
 
 To use Alexandria as a command-line tool, you first need to activate it using `dart pub`.
-
-    ```bash
-    dart pub global activate --source git git@github.com:atebitftw/alexandria.git
-    ```
+```bash
+dart pub global activate --source git git@github.com:atebitftw/alexandria.git
+```
 
 This will compile the utility and make the `alexandria` command available globally in your terminal.
 
@@ -25,9 +24,9 @@ This will compile the utility and make the `alexandria` command available global
 2.  Configure the file to point to your projects (see Configuration below).
 3.  Run the `alexandria` command.
 
-    ```bash
-    alexandria
-    ```
+```bash
+alexandria
+```
 
 The utility will generate the documentation into the specified output directory and create a master `index.html` for navigation.
 
