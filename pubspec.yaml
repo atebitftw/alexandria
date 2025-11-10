@@ -1,7 +1,7 @@
 name: alexandria
 description: A utility for consolidating dart docs from multiple projects into a single site.
 license: MIT
-version: 1.0.338
+version: 1.0.5
 environment:
   sdk: ^3.9.2
 publish_to: none
@@ -10,6 +10,7 @@ executables:
   alexandria:
 
 dependencies:
+  args: ^2.7.0
   logging:
   path: ^1.8.0
 dev_dependencies:

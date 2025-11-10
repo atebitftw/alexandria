@@ -7,9 +7,12 @@ import 'shell_executor.dart';
 
 class DocGenerator {
   final Map<String, dynamic> _config;
+  final bool _quiet;
   final _shell = ShellExecutor();
 
-  DocGenerator(List<dynamic> config) : _config = config.first;
+  DocGenerator(List<dynamic> config, {bool quiet = false})
+      : _config = config.first,
+        _quiet = quiet;
 
   Future<void> generate() async {
     final outputDir = _expandPath(_config['output_dir']);
@@ -27,7 +30,7 @@ class DocGenerator {
       final projectOutputDir = p.join(outputDir, projectName);
 
       print('\n--- Checking project: $projectName ---');
-      
+
       final currentVersion = await _getProjectVersion(projectPath);
       if (currentVersion == null) {
         print('ERROR: Could not determine version for $projectName. Skipping.');
@@ -48,28 +51,25 @@ class DocGenerator {
       }
 
       await Directory(projectOutputDir).create(recursive: true);
-
-      final result = await _shell.execute(
-        'dart',
-        ['doc', '--output', projectOutputDir],
-        workingDirectory: projectPath,
-      );
+      final result = await _shell.execute('dart', ['doc', '--output', projectOutputDir], workingDirectory: projectPath);
 
       if (result.exitCode == 0) {
         await metadataFile.writeAsString('{"version": "$currentVersion"}');
         print('Successfully generated docs for $projectName.');
-        if (result.stdout.toString().isNotEmpty) {
+        if (!_quiet && result.stdout.toString().isNotEmpty) {
           print(result.stdout);
         }
       } else {
-        print('ERROR: Failed to generate docs for $projectName.');
+        final message = "ERROR: Failed to generate docs for $projectName}";
+        print(message);
         print('Exit Code: ${result.exitCode}');
         if (result.stderr.toString().isNotEmpty) {
           print(result.stderr);
         }
+        throw Exception(message);
       }
     }
-    
+
     await _createIndexPage(outputDir, projectNames);
     print('\n--- All projects processed. ---');
   }
@@ -87,12 +87,18 @@ class DocGenerator {
   Future<void> _createIndexPage(String outputDir, List<String> projectNames) async {
     print('\n--- Creating master index page ---');
     final indexPath = p.join(outputDir, 'index.html');
-    
-    final projectsListHtml = projectNames.map((name) => '''
-      <li><a href="$name/index.html">$name</a></li>
-    ''').join('\n');
 
-    final htmlContent = '''
+    final projectsListHtml = projectNames
+        .map(
+          (name) =>
+              '''
+      <li><a href="$name/index.html">$name</a></li>
+    ''',
+        )
+        .join('\n');
+
+    final htmlContent =
+        '''
 <!DOCTYPE html>
 <html lang="en">
 <head>

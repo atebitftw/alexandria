@@ -25,9 +25,9 @@ This will compile the utility and make the `alexandria` command available global
 
 ## Usage
 
-1.  Create an `alexandria_config.json` file in a directory of your choice.
+1.  Create an `alexandria_config.json` file.
 2.  Configure the file to point to your projects (see Configuration below).
-3.  Run the command in the same directory as your config file:
+3.  Run the `alexandria` command.
 
     ```bash
     alexandria
@@ -35,9 +35,18 @@ This will compile the utility and make the `alexandria` command available global
 
 The utility will generate the documentation into the specified output directory and create a master `index.html` for navigation.
 
+## Options
+
+| Flag | Abbreviation | Description | Default |
+|---|---|---|---|
+| `--config` | `-c` | Path to the alexandria_config.json file. | `alexandria_config.json` |
+| `--help` | `-h` | Displays this help information. | |
+| `--version` | `-v` | Displays the application version. | |
+| `--quiet` | `-q` | Suppresses output from dart doc. | |
+
 ## Configuration
 
-The `alexandria` utility is controlled by a configuration file named `alexandria_config.json`. This file must be in the directory where you run the `alexandria` command.
+The `alexandria` utility is controlled by a configuration file. By default, it looks for `alexandria_config.json` in the current directory, but you can specify a different path via the command line.
 
 The configuration is a JSON array with a single object that has the following fields:
 
